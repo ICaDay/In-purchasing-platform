@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.Mapper.CompanyMapper">
+    <select id="findAll" resultType="com.mall.entity.Company">
+        select *
+        from Company
+    </select>
+    <insert id="addCompany" parameterType="com.mall.entity.Company">
+        INSERT INTO  Company(`Company_name`,`Company_type`,`Company_introduce`,`set_time`,`The_registered_capital`,`Legal_representative`,`phone_number`,`Company_id`,`status`)
+            VALUES
+            (#{Company_name},#{Company_type},#{Company_introduce},#{set_time},#{The_registered_capital},#{Legal_representative},#{phone_number},null,#{status})
+    </insert>
+
+
+    <update id="deleteCompany" parameterType="java.lang.Integer">
+        UPDATE
+            Company
+        SET
+            status = 1
+        WHERE Company_id = #{Company_id}
+    </update>
+
+
+
+    <update id="updateCompany" parameterType="com.mall.entity.Company">
+        UPDATE
+            Company
+        SET
+            Company_name=#{Company_name},
+            Company_type=#{Company_type},
+            Company_introduce=#{Company_introduce},
+            set_time=#{set_time},
+            The_registered_capital=#{The_registered_capital},
+            Legal_representative=#{Legal_representative},
+            phone_number=#{phone_number},
+        where Company_id=#{Company_id}
+    </update>
+
+
+</mapper>
