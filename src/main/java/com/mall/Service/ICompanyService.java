@@ -6,9 +6,12 @@ package com.mall.Service;/*
 import com.github.pagehelper.PageInfo;
 import com.mall.entity.Company;
 
+import java.util.List;
+
 public interface ICompanyService {
     boolean add(Company company);
     boolean deleteCompany(String company_id);
     boolean updateCompany(String company);
-    PageInfo<Company> CompanyList(int page, int limit);
+    PageInfo <Company> CompanyList(int page, int limit);
+    List<Company> findId(Integer company_id);
 }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.mapper.Mmall_product_specsMapper">
+    <select id="findAll" resultType="Mmall_product_specs">
+        select *
+        from mmall_product_specs
+    </select>
+    <insert id="doAdd" parameterType="Mmall_product_specs">
+        insert into mmall_product_specs
+        (goodsId,product_specs,specs_seq,product_stock,product_price)
+        VALUES
+        (#{goodsId},#{product_specs},#{specs_seq},#{product_stock},#{product_price})
+    </insert>
+
+    <select id="find" parameterType="int" resultType="Mmall_product_specs">
+        select *
+        from mmall_product_specs
+        where id = #{id}
+    </select>
+
+    <update id="doUpdate" parameterType="Mmall_product_specs">
+        update mmall_product_specs
+        <set>
+            <if test="goodsId!=null">
+                goodsId = #{goodsId},
+            </if>
+            <if test="product_specs!=null">
+                product_specs = #{product_specs},
+            </if>
+            <if test="specs_seq!=null">
+                specs_seq = #{specs_seq},
+            </if>
+            <if test="product_stock!=null">
+                product_stock = #{product_stock},
+            </if>
+            <if test="product_price!=null">
+                product_price = #{product_price},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="findvalue" parameterType="int" resultType="Mmall_product_specs">
+        select *
+        from mmall_product_specs
+        where goodsId =#{goodsId}
+    </select>
+</mapper>

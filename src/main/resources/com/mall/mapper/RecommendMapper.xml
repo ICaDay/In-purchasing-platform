@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.mapper.RecommendMapper">
+
+    <resultMap id="recommendMap" type="Recommend" autoMapping="true">
+        <id column="Id" property="Id"/>
+        <association property="goods" javaType="Goods" autoMapping="true">
+            <id column="goodsId" property="goodsId"/>
+        </association>
+    </resultMap>
+
+
+
+    <select id="findAll" resultMap="recommendMap">
+        select
+               o.Id,o.userId,g.goodsId,g.goodsName,g.goodsType,g.goodsStatus,g.goodsPrice,g.goodsHuaxianjia,g.goodsStock,g.goodsSpecifications,g.goodsAddress,g.goodsProduceDate,g.goodsPicture,g.goodsYunfei,g.goodsXiangqing,g.goodsFlag,g.storesId,g.selectStatus
+        from recommend o
+        join goods g
+        on o.goodsId = g.goodsId
+    </select>
+
+    <select id="find" parameterType="int" resultMap="recommendMap">
+        select o.Id,o.userId,g.goodsId,g.goodsName,g.goodsType,g.goodsStatus,g.goodsPrice,g.goodsHuaxianjia,g.goodsStock,g.goodsSpecifications,g.goodsAddress,g.goodsProduceDate,g.goodsPicture,g.goodsYunfei,g.goodsXiangqing,g.goodsFlag,g.storesId,g.selectStatus
+        from recommend o
+        join goods g
+        on o.goodsId = g.goodsId
+        where o.Id=#{Id}
+    </select>
+
+    <insert id="doAdd" parameterType="Recommend">
+        insert into recommend
+        (Id,userId,goodsId)
+        VALUES
+        (#{Id},#{userId},#{goods.goodsId})
+    </insert>
+
+
+
+    <update id="doUpdate" parameterType="Recommend">
+        update recommend
+        set Id=#{Id},
+            userId = #{userId},
+            goodsId=#{goods.goodsId}
+        where Id=#{Id}
+    </update>
+
+    <select id="finduser" parameterType="int"  resultMap="recommendMap">
+        select o.Id,o.userId,g.goodsId,g.goodsName,g.goodsType,g.goodsStatus,g.goodsPrice,g.goodsHuaxianjia,g.goodsStock,g.goodsSpecifications,g.goodsAddress,g.goodsProduceDate,g.goodsPicture,g.goodsYunfei,g.goodsXiangqing,g.goodsFlag,g.storesId,g.selectStatus
+            from recommend o
+            join goods g
+            on o.goodsId = g.goodsId
+        where o.userId=#{member_id}
+    </select>
+</mapper>

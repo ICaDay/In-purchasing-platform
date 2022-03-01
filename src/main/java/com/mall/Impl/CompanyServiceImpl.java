@@ -6,7 +6,7 @@ package com.mall.Impl;/*
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.mall.Mapper.CompanyMapper;
+import com.mall.mapper.CompanyMapper;
 import com.mall.Service.ICompanyService;
 import com.mall.entity.Company;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +63,8 @@ public class CompanyServiceImpl implements ICompanyService {
         }
         return false;
     }
-
+    @Override
+    public List<Company> findId(Integer company_id){
+        return companyMapper.findId(company_id);
+    }
 }

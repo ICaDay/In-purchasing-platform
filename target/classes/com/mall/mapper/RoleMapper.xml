@@ -2,32 +2,32 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mall.Mapper.RoleMapper">
+<mapper namespace="com.mall.mapper.RoleMapper">
     <select id="findAll" parameterType="com.mall.entity.Role" resultType="com.mall.entity.Role">
         select *
-        from Role
-        where status=0;
+        from role
+        where status=0
     </select>
 
     <insert id="addRole" parameterType="com.mall.entity.Role">
         insert into
-            Role(`role_id`,`role_name`,`status`)
+            role(`role_id`,`role_name`,`status`)
             VALUES (#{Role_id},#{Role_name},#{status})
     </insert>
 
     <update id="deleteRole" parameterType="java.lang.Integer">
         update
-        Role
-        set status
+        role
+        set status=1
         where role_id=#{Role_id}
     </update>
 
     <update id="updateRole" parameterType="com.mall.entity.Role">
         UPDATE
-        Role
+        role
         set role_name=#{Role_name}
             status=#{status}
-        where role_id=#{Role_id};
+        where role_id=#{Role_id}
     </update>
 
 </mapper>

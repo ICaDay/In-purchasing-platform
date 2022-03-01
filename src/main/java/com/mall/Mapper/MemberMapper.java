@@ -1,4 +1,4 @@
-package com.mall.Mapper;/*
+package com.mall.mapper;/*
     @author Administrator
     @create 2021-07-15 11:46
 */
@@ -7,7 +7,6 @@ import com.github.pagehelper.PageInfo;
 import com.mall.entity.Member;
 import org.apache.ibatis.annotations.Mapper;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Mapper
@@ -20,6 +19,5 @@ public interface MemberMapper {
     Integer updateMember(Member member);
     Member find_all(Member member);
    // Member find_after(Member member);
-
-
+    List<Member> findId(String member_id);
 }

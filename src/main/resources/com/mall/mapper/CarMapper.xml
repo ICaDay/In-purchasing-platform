@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.mapper.CarMapper">
+
+
+    <resultMap id="carMap" type="Car" autoMapping="true">
+        <id column="carId" property="carId"/>
+        <association property="goods" javaType="Goods" autoMapping="true">
+            <id column="goodsId" property="goodsId"/>
+        </association>
+        <association property="stores" javaType="Stores" autoMapping="true">
+            <id column="storesId" property="storesId"/>
+        </association>
+        <association property="mmall_product_specs" javaType="Mmall_product_specs" autoMapping="true">
+            <id column="id" property="id"/>
+        </association>
+    </resultMap>
+    <select id="findAll" resultMap="carMap">
+        select *
+        from car
+                 join goods
+                      on car.goodsId = goods.goodsId
+                 JOIN stores
+                      ON goods.storesId = stores.storesId
+                 JOIN mmall_product_specs
+                      ON car.id = mmall_product_specs.id
+    </select>
+
+    <select id="find" parameterType="int" resultMap="carMap">
+        select o.carId,
+               o.shopname,
+               o.carAddress,
+               o.carFlag,
+               o.money,
+               o.infoSelectStatus,
+               o.amount,
+               o.userId,
+               g.goodsId,
+               g.goodsName,
+               g.goodsPrice,
+               g.goodsXiangqing,
+               g.goodsFlag,
+               g.storesId
+        from car o
+                 join goods g
+                      on o.goodsId = g.goodsId
+        where o.carId = #{carId}
+    </select>
+
+    <insert id="doAdd" parameterType="Car">
+        insert into car
+        (carId,carFlag,userId, goodsId,storesId,id)
+        VALUES (#{carId}, #{carFlag}, #{userId},#{goodsId},#{storesId},#{id})
+    </insert>
+
+    <update id="doUpdate" parameterType="Car">
+        update car
+        <set>
+            <if test="shopName!=null">
+                shopName=#{shopname},
+            </if>
+            <if test="money!=null">
+                money = #{money},
+            </if>
+            <if test="infoSelectStatus!=null">
+                infoSelectStatus = #{infoSelectStatus},
+            </if>
+            <if test="amount!=null">
+                amount = #{amount},
+            </if>
+            <if test="goodsId!=null">
+                goodsId=#{goods.goodsId},
+            </if>
+            <if test="Adress_id!=null">
+                Adress_id=#{Adress_id},
+            </if>
+            <if test="userId!=null">
+                userId=#{userId},
+            </if>
+            <if test="id!=null">
+                id=#{id},
+            </if>
+        </set>
+
+        where carId=#{carId}
+    </update>
+
+    <select id="findgoodsList" parameterType="int" resultMap="carMap">
+        select *
+        from car
+                 join goods
+                      on car.goodsId = goods.goodsId
+                 JOIN stores
+                      ON goods.storesId = stores.storesId
+                 JOIN mmall_product_specs
+                      ON mmall_product_specs.id = car.id
+        where (car.carId in (select min(car.carId) from car GROUP BY car.goodsId)) AND userId = #{userId} and carFlag=1
+        group by car.storesId, car.carId
+
+    </select>
+</mapper>

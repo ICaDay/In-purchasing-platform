@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mall.Mapper.CompanyMapper">
+<mapper namespace="com.mall.mapper.CompanyMapper">
     <select id="findAll" resultType="com.mall.entity.Company">
         select *
-        from Company
+        from company
+        where status=0
     </select>
     <insert id="addCompany" parameterType="com.mall.entity.Company">
-        INSERT INTO  Company(`Company_name`,`Company_type`,`Company_introduce`,`set_time`,`The_registered_capital`,`Legal_representative`,`phone_number`,`Company_id`,`status`)
+        INSERT INTO  company(`Company_name`,`Company_type`,`Company_introduce`,`set_time`,`The_registered_capital`,`Legal_representative`,`phone_number`,`Company_id`,`industry`,`status`)
             VALUES
-            (#{Company_name},#{Company_type},#{Company_introduce},#{set_time},#{The_registered_capital},#{Legal_representative},#{phone_number},null,#{status})
+            (#{Company_name},#{Company_type},#{Company_introduce},#{set_time},#{The_registered_capital},#{Legal_representative},#{phone_number},null,#{industry},#{status})
     </insert>
 
 
     <update id="deleteCompany" parameterType="java.lang.Integer">
         UPDATE
-            Company
+            company
         SET
             status = 1
         WHERE Company_id = #{Company_id}
@@ -25,17 +26,39 @@
 
     <update id="updateCompany" parameterType="com.mall.entity.Company">
         UPDATE
-            Company
-        SET
-            Company_name=#{Company_name},
-            Company_type=#{Company_type},
-            Company_introduce=#{Company_introduce},
-            set_time=#{set_time},
-            The_registered_capital=#{The_registered_capital},
-            Legal_representative=#{Legal_representative},
-            phone_number=#{phone_number},
+            company
+        <set>
+            <if test="Company_name!=null">
+                Company_name=#{Company_name}
+            </if>
+            <if test="Company_type!=null">
+                Company_type=#{Company_type}
+            </if>
+            <if test="Company_introduce!=null">
+                Company_introduce=#{Company_introduce}
+            </if>
+            <if test="set_time!=null">
+                set_time=#{set_time}
+            </if>
+            <if test="The_registered_capital!=null">
+                The_registered_capital=#{The_registered_capital}
+            </if>
+            <if test="Legal_representative!=null">
+                Legal_representative=#{Legal_representative}
+            </if>
+            <if test="phone_number!=null">
+                phone_number=#{phone_number}
+            </if>
+            <if test="industry!=null">
+                industry=#{industry}
+            </if>
+        </set>
         where Company_id=#{Company_id}
     </update>
 
-
+    <select id="findId"  parameterType="java.lang.Integer"  resultType="com.mall.entity.Company">
+        select *
+        from company
+        where company_id=#{company_id} and status=0
+    </select>
 </mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.mapper.InvoiceMapper">
+    <select id="findAll" parameterType="com.mall.entity.invoice" resultType="com.mall.entity.invoice">
+        select *
+        from invoice
+        where status=0
+    </select>
+    <insert id="addInvoice" parameterType="com.mall.entity.invoice">
+        insert into invoice
+            (invoice_id,name,Taxpayer_number,tax_code,tax_rate,review_person,drawer,payee,card_number,opening_bank,member_id,company_id,status,cstatus,phone_number)
+        values
+            (#{invoice_id},#{name},#{Taxpayer_number},#{tax_code}, #{tax_rate},#{review_person},#{drawer},#{payee},#{card_number},#{opening_bank},#{member_id},#{company_id},#{status},#{cstatus},#{phone_number})
+    </insert>
+    <update id="deleteInvoice" parameterType="java.lang.Integer">
+        update invoice
+        set status=1
+        where invoice_id=#{invoice_id}
+    </update>
+    <select id="findStatus" resultType="com.mall.entity.invoice">
+        select *
+        from invoice
+        where status=0 and cstatus=#{cstatus}
+    </select>
+    <update id="updateInvoice" parameterType="com.mall.entity.invoice">
+        update invoice
+        <set>
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="Taxpayer_number!=null">
+                Taxpayer_number=#{Taxpayer_number},
+            </if>
+            <if test="tax_code!=null">
+                tax_code=#{tax_code},
+            </if>
+            <if test="tax_rate!=null">
+                tax_rate=#{tax_rate},
+            </if>
+            <if test="review_person!=null">
+                review_person=#{review_person},
+            </if>
+            <if test="drawer!=null">
+                drawer=#{drawer},
+            </if>
+            <if test="payee!=null">
+                payee=#{payee},
+            </if>
+            <if test="card_number!=null">
+                card_number=#{card_number},
+            </if>
+            <if test="member_id!=null">
+                member_id=#{member_id},
+            </if>
+            <if test="company_id!=null">
+                company_id=#{company_id},
+            </if>
+            <if test="cstatus!=null">
+                cstatus=#{cstatus},
+            </if>
+            <if test="phone_number!=null">
+                phone_number=#{phone_number},
+            </if>
+        </set>
+        where invoice_id=#{invoice_id}
+    </update>
+</mapper>

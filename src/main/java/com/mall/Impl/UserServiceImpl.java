@@ -3,11 +3,10 @@ package com.mall.Impl;/*
     @create 2021-07-15 21:14
 */
 
-import com.mall.Mapper.UserMapper;
+import com.mall.mapper.UserMapper;
 import com.mall.Service.IUserService;
 import com.mall.entity.ResultMap;
 import com.mall.entity.Users;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,10 +31,12 @@ public class UserServiceImpl implements IUserService {
                     resultMap.setMessage("登录成功");
                     request.getSession().setAttribute("loginUser",login);
                     return true;
+                }else{
+                    resultMap.setMessage("账号或密码错误");
+                    return false;
                 }
             }
         }
-        else resultMap.setMessage("账号或密码错误");
         return false;
     }
 }

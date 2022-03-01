@@ -5,6 +5,7 @@ package com.mall.Service;/*
 
 import com.mall.entity.ResultMap;
 import com.mall.entity.Users;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.mapper.CategoryMapper">
+    <select id="findAll" resultType="Category">
+        select *
+        from category
+    </select>
+    <insert id="doAdd" parameterType="Category">
+        insert into category
+        (categoryName,categoryLevel,categoryFlag,parentId,categoryRank)
+        VALUES
+        (#{categoryName},#{categoryLevel},#{categoryFlag},#{parentId},#{categoryRank})
+    </insert>
+
+    <select id="find" parameterType="int" resultType="Category">
+        select *
+        from category
+        where categoryId = #{categoryId}
+    </select>
+
+    <update id="doUpdate" parameterType="Category">
+        update category
+        <set>
+            <if test="categoryName!=null">
+                categoryName=#{categoryName}
+            </if>
+            <if test="categoryLevel!=null">
+                categoryLevel=#{categoryLevel}
+            </if>
+            <if test="categoryFlag!=null">
+                categoryFlag=#{categoryFlag}
+            </if>
+            <if test="parentId!=null">
+                parentId=#{parentId}
+            </if>
+            <if test="categoryRank!=null">
+                categoryRank=#{categoryRank}
+            </if>
+        </set>
+        where categoryId=#{categoryId}
+    </update>
+    <select id="findLevel" parameterType="int" resultType="Category">
+        select *
+        from category
+        where categoryLevel = #{categoryLevel}
+    </select>
+    <select id="findSon" parameterType="int" resultType="Category">
+        select *
+        from category
+        where parentId = #{parentId}
+    </select>
+    <select id="findGrandson" parameterType="Category">
+        select *
+        from category
+        where parentId = #{findSon(category.parentId)}
+    </select>
+</mapper>

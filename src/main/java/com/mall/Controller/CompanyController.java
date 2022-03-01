@@ -4,19 +4,25 @@ package com.mall.Controller;/*
 */
 
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import com.mall.Service.ICompanyService;
 import com.mall.entity.Company;
 import com.mall.entity.ResultMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 @Controller
 @RequestMapping("/Company_information")
 public class CompanyController {
-    @Autowired
+    @Resource
     ICompanyService companyService;
     ResultMap resultMap=new ResultMap();
 
@@ -30,6 +36,7 @@ public class CompanyController {
         //返回分页数据
         return JSON.toJSONString(resultMap);
     }
+
 
     @RequestMapping("/add_company")
     @ResponseBody
@@ -56,5 +63,14 @@ public class CompanyController {
         boolean update_com = companyService.updateCompany(company1);
         resultMap.setStatus(update_com);
         return JSON.toJSONString(resultMap);
+    }
+    @RequestMapping("/findId")
+    @ResponseBody
+    public String findId(Integer company_id, Model model) throws JsonProcessingException {
+        ObjectMapper mapper=new ObjectMapper();
+        List<Company> findId=companyService.findId(company_id);
+        model.addAttribute("findId",findId);
+        String str=mapper.writeValueAsString(model);
+        return str;
     }
 }

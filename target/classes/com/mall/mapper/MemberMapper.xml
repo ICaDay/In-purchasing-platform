@@ -2,47 +2,94 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mall.Mapper.MemberMapper">
-    <select id="findAll" parameterType="com.mall.entity.Member" resultType="com.mall.entity.Member">
+<mapper namespace="com.mall.mapper.MemberMapper">
+
+    <resultMap id="memberMap" type="Member" autoMapping="true">
+        <id column="member_id" property="member_id"/>
+        <association property="role" javaType="Role" autoMapping="true">
+            <id column="Role_id" property="Role_id"/>
+        </association>
+    </resultMap>
+
+    <select id="findAll" resultMap="memberMap">
         select *
         from member
-        where status=0;
+                 join role
+                           on member.role_id=role.role_id
+        where member.status = 0
     </select>
-
     <select id="find_all" parameterType="com.mall.entity.Member" resultType="com.mall.entity.Member">
         select *
         from member
-        where member_name=#{member_name} and member_password=#{member_password}
+        where member_name = #{member_name}
+          and member_password = #{member_password} and Role_id=#{Role_id} and member.status=0
     </select>
 
     <insert id="addMember" parameterType="com.mall.entity.Member">
-        insert into
-        member
-        (`member_id`,`member_name`,`member_phone`,`member_password`,`sex`,
-        `set_time`,`role_id`,`company_id`,`status` )
-        VALUES
-        (#{member_id},#{member_name},#{member_phone},#{member_password},#{sex}
-        ,#{set_time},#{role_id},#{company_id},#{status})
+        insert into member
+        (`member_id`, `member_name`, `member_phone`, `member_password`, `sex`,
+         `set_time`, `role_id`, `company_id`, `status`, `Adress`, `card`, `head`)
+        VALUES ( #{member_id}, #{member_name}, #{member_phone}, #{member_password}, #{sex}
+               , #{set_time}, #{role_id}, #{company_id}, #{status}, #{Adress}, #{card}, #{head})
     </insert>
 
-    <update id="deleteMember" parameterType="com.mall.entity.Member">
+    <update id="deleteMember" parameterType="java.lang.Integer">
         update
             member
         set status=1
+        where member_id = #{member_id}
+    </update>
+
+    <update id="updateMember">
+        update
+        member
+        <set>
+            <if test="member_password!=null">
+                member_password=#{member_password},
+            </if>
+            <if test="head!=null">
+                head=#{head},
+            </if>
+            <if test="member_phone!=null">
+                member_phone=#{member_phone},
+            </if>
+            <if test="cardmoney!=null">
+                cardmoney=#{cardmoney},
+            </if>
+
+            <if test="sex!=null">
+                sex=#{sex},
+            </if>
+            <if test="member_phone!=null">
+                member_phone=#{member_phone},
+            </if>
+            <if test="card!=null">
+                card=#{card},
+            </if>
+            <if test="sex!=null">
+                sex=#{sex},
+            </if>
+            <if test="set_time!=null">
+                set_time=#{set_time},
+            </if>
+            <if test="Adress_id!=null">
+                Adress_id=#{Adress_id},
+            </if>
+            <if test="role_id!=null">
+                role_id=#{role_id},
+            </if>
+            <if test="Company_id!=null">
+                Company_id=#{Company_id},
+            </if>
+            <if test="name!=null">
+                name=#{name},
+            </if>
+        </set>
         where member_id=#{member_id}
     </update>
-
-    <update id="updateMember" parameterType="com.mall.entity.Member">
-        update
-            member
-        set
-            member_id=#{member_id}
-            member_phone=#{member_phone}
-            sex=#{sex}
-            set_time=#{set_time}
-            role_id=#{role_id}
-            company_id=#{company_id}
-        where  member_name=#{member_name} and member_password=#{member_password}
-    </update>
-
+    <select id="findId" parameterType="string" resultType="com.mall.entity.Member">
+        select *
+        from member
+        where member_id = #{member_id}
+    </select>
 </mapper>

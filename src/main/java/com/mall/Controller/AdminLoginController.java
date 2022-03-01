@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class AdminLoginController {
 
-    @Autowired
+    @Resource
     IUserService userService;
     ResultMap resultMap = new ResultMap();
     @RequestMapping("/login_admin")

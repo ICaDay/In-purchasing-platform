@@ -3,17 +3,28 @@ package com.mall.entity;/*
     @create 2021-07-16 14:52
 */
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class Company {
     private Integer Company_id;
     private String Company_name;
     private String Company_type;
     private String Company_introduce;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private String set_time;
     private Integer The_registered_capital;
     private String Legal_representative;
     private Integer phone_number;
     private Integer status;
+    private String industry;
 
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
+    }
 
     public Integer getStatus() {
         return status;
@@ -99,6 +110,7 @@ public class Company {
                 ", Legal_representative='" + Legal_representative + '\'' +
                 ", phone_number=" + phone_number +
                 ", status=" + status +
+                ", industry='" + industry + '\'' +
                 '}';
     }
 }

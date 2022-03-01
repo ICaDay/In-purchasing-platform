@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mall.mapper.OrdersMapper">
+
+    <resultMap id="ordersMap" type="Orders" autoMapping="true">
+        <id column="ordersId" property="ordersId"/>
+        <association property="goods" javaType="Goods" autoMapping="true">
+            <id column="goodsId" property="goodsId"/>
+        </association>
+    </resultMap>
+
+
+
+    <select id="findAll" resultMap="ordersMap">
+        select
+               *
+        from orders o
+        join goods g
+        on o.goodsId = g.goodsId
+    </select>
+
+    <select id="find" parameterType="int" resultMap="ordersMap">
+        select *
+        from orders o
+        join goods g
+        on o.goodsId = g.goodsId
+        where o.ordersId=#{ordersId}
+    </select>
+
+    <insert id="doAdd" parameterType="Orders">
+        insert into orders
+        (ordersFlag,ordersStatus,ordersProduceDate,ordersPurchaser,ordersAddress,ordersPhone,ordersPost,ordersCompany,ordersNumber,ordersDate,goodsId,member_id)
+        VALUES
+        (#{ordersFlag},#{ordersStatus},#{ordersProduceDate},#{ordersPurchaser},#{ordersAddress},#{ordersPhone},#{ordersPost},#{ordersCompany},#{ordersNumber},#{ordersDate},#{goods.goodsId},#{member_id})
+    </insert>
+
+
+
+    <update id="doUpdate" parameterType="com.mall.entity.Orders">
+        update orders
+        <set>
+            <if test="ordersStatus!=null">
+                ordersStatus=#{ordersStatus},
+            </if>
+            <if test="ordersNumber!=null">
+                ordersNumber=#{ordersNumber},
+            </if>
+            <if test="ordersProduceDate!=null">
+                ordersProduceDate=#{ordersProduceDate},
+            </if>
+
+            <if test="ordersPurchaser!=null">
+                ordersPurchaser=#{ordersPurchaser},
+            </if>
+            <if test="ordersAddress!=null">
+                ordersAddress=#{ordersAddress},
+            </if>
+            <if test="ordersPhone!=null">
+                ordersPhone=#{ordersPhone},
+            </if>
+            <if test="ordersCompany!=null">
+                ordersCompany=#{ordersCompany},
+            </if>
+            <if test="ordersDate!=null">
+                ordersDate=#{ordersDate},
+            </if>
+
+            <if test="goodsId!=null and goodsId gte 0">
+                goodsId=#{goodsId},
+            </if>
+            <if test="member_id!=null and member_id gte 0">
+                member_id=#{member_id},
+            </if>
+        </set>
+        where ordersId=#{ordersId}
+    </update>
+    <select id="findorders" resultMap="ordersMap">
+        select *
+        from orders
+                 join goods
+                      on orders.goodsId = goods.goodsId
+        where orders.ordersStatus = #{ordersStatus}
+    </select>
+    <select id="findStatus"  resultMap="ordersMap">
+        select *
+        from orders
+        join goods
+        on orders.goodsId = goods.goodsId
+        where orders.ordersStatus = #{ordersStatus} and orders.member_id=#{member_id}
+    </select>
+    <select id="findId" resultMap="ordersMap">
+        select *
+        from orders
+                 join goods
+                      on orders.goodsId = goods.goodsId
+        where orders.member_id=#{member_id}
+    </select>
+</mapper>

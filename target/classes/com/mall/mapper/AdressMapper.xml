@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.mapper.AdressMapper">
+    <select id="findAll" resultType="com.mall.entity.Adress">
+        select *
+        from adress
+        where status=0
+    </select>
+    <insert id="address">
+        insert into adress
+        (`Adress_id`,`Detailed_address`,`phone_number`,`name`,`status`,`member_id`,`city`)
+        values (null,#{Detailed_address},#{phone_number},#{name},#{status},#{member_id},#{city})
+    </insert>
+    <update id="updateaddress">
+        update adress
+        <set>
+            <if test="Detailed_address!=null">
+                Detailed_address=#{Detailed_address},
+            </if>
+            <if test="phone_number!=null">
+                phone_number=#{phone_number},
+            </if>
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="city!=null">
+                city=#{city},
+            </if>
+        </set>
+        where member_id=#{member_id} and Adress_id=#{Adress_id}
+    </update>
+    <update id="deleteaddress">
+        update
+            adress
+        set status=1
+        where Adress_id=#{Adress_id}
+    </update>
+    <select id="findId" parameterType="string" resultType="com.mall.entity.Adress">
+        select *
+        from adress
+        where member_id=#{member_id} and status=0
+    </select>
+</mapper>

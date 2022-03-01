@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.mapper.StoresMapper">
+
+
+    <resultMap id="storesMap" type="Stores" autoMapping="true">
+        <id column="storesId" property="storesId"/>
+        <association property="goods" javaType="Goods" autoMapping="true">
+            <id column="goodsId" property="goodsId"/>
+        </association>
+    </resultMap>
+
+
+
+    <select id="findAll" resultMap="storesMap">
+        select
+               *
+        from stores s
+            left join goods c
+                on s.goodsId = c.goodsId
+    </select>
+
+    <select id="find" parameterType="int" resultMap="storesMap">
+        select
+            s.storesId,s.storesName,s.storesNotice,s.storesFlag,s.businessSelectStatus,c.categoryId,c.goodsName,c.xiaoliang,c.goodsStock
+        from stores s
+             left join goods c
+                      on s.goodsId = c.goodsId
+    </select>
+
+    <insert id="doAdd" parameterType="Stores">
+        insert into stores
+        (storesName,storesNotice,storesFlag,businessSelectStatus,categoryId)
+        VALUES
+        (#{storesName},#{storesNotice},#{storesFlag},#{businessSelectStatus},#{category.categoryId})
+    </insert>
+
+
+
+    <update id="doUpdate" parameterType="Stores">
+        update stores
+        <set>
+            <if test="storesName!=null">
+                storesName=#{storesName}
+            </if>
+            <if test="storesNotice!=null">
+                storesNotice=#{storesNotice},
+            </if>
+            <if test="categoryId!=null">
+                categoryId=#{category.categoryId}
+            </if>
+            <if test="businessSelectStatus!=null">
+                businessSelectStatus=#{businessSelectStatus},
+            </if>
+            <if test="storesFlag!=null">
+                storesFlag=#{storesFlag},
+            </if>
+        </set>
+        set ,
+
+
+
+
+        where storesId=#{storesId}
+    </update>
+</mapper>

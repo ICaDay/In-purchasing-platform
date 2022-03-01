@@ -1,0 +1,100 @@
+create table Goods(
+    goodsId int auto_increment primary key   ,
+    goodsName varchar(100) , #商品名字
+    goodsType varchar(100) , #商品类型
+    goodsStatus varchar(100) ,#商品状态
+    goodsPrice numeric(15,2) ,        #商品价格 15位有效数字 2位小数  √
+		goodsHuaxianjia numeric(15,2) ,   #商品划线价
+    goodsStock int(15) ,              #商品库存
+    goodsSpecifications varchar(15) , #商品规格
+    goodsAddress varchar(200) ,       #商品地址
+    goodsProduceDate date,            #商品日期
+    goodsPicture varchar(20000) ,       #商品照片   √
+		goodsYunfei int(100),             #商品运费   √
+		goodsXiangqing varchar(200),      #商品详情   √
+		goodsFlag int(100),
+		storesId int,
+		selectStatus int(100),
+		categoryId int,                      #对应分类编号
+		foreign key(categoryId)
+		REFERENCES category(categoryId)
+);
+INSERT into Goods values ('1','pzh','发货商品','已售罄','666.66','999.99','1','1.65 * 0.3','浙江','20210716','ddd','10','dddd','1','2','11','0','1');
+INSERT into Goods values ('3','xxx','发货商品','待上架','666.66','999.99','1','1.65 * 0.3','浙江','20210716','ddd','10','dddd','1','2','0','1');
+
+create table Orders(
+	ordersId int auto_increment primary key ,											#订单号
+	ordersFlag varchar(100),							# 订单 是否 可视化
+	ordersStatus varchar(100),    				#状态
+	ordersProduceDate date 		,						#下单时间
+	ordersPurchaser varchar(200),             #购买人
+	ordersAddress VARCHAR(200),           #收货地址
+	ordersPhone varchar(200),             #收货人手机
+	ordersPost varchar(200),							#邮政编码
+	ordersCompany varchar(200),           #邮寄公司
+	ordersNumber varchar(200),						#订单号
+	ordersDate date,											#收货日期
+	goodsId int,
+	foreign key(goodsId)
+	REFERENCES goods(goodsId)
+);
+insert into Orders values ("1","1","已完成","20210726","phh","浙江","18657167373","314304","顺丰","1111111","20210730","1");
+
+create table category(
+	categoryId int auto_increment primary key,#分类编号
+	categoryName varchar(100), 	          	#分类名字
+	categoryLevel int(10),                  #分类级别
+  categoryFlag int(10),                   #是否可视化
+	parentId int(10),                       #父类Id
+	categoryRank int(10)                    #排序值  越高越靠前
+);
+insert into category values ("1","饮品","3","1","2","95");
+insert into category values ("2","饮料","2","1","3","96");
+insert into category values ("3","食品","1","1","0","99");
+
+
+select * from category where categoryLevel = 2
+
+ CREATE table stores(
+	storesId int auto_increment PRIMARY key,
+	storesName varchar(200),
+	storesNotice varchar(200),
+	storesFlag int(10),
+	businessSelectStatus int(10),
+	categoryId int,
+	foreign key    (categoryId)
+	REFERENCES     category(categoryId)
+);
+insert into stores values("1","pzh的小店","快来买呀","1","0","1");
+
+ CREATE table car(
+	carId int auto_increment PRIMARY key,
+	carName varchar(200),
+	carAddress varchar(200),
+	carFlag int(10),
+	money int(10),
+	infoSelectStatus int(10),
+	amount int(10),
+	userId int(10),
+	goodsId int,
+	foreign key    (goodsId)
+	REFERENCES     goods(goodsId)
+);
+insert into car value('1',"pzh的小店","中国计量大学",'1','666.66','0','2','1','1');
+insert into car value('2',"pzh的小店","中国计量大学",'1','666.66','0','2','1','2');
+insert into car value('3',"zbx的小店","中国计量大学",'1','666.66','0','1','2','1');
+insert into car value('null',"zbx的小店","中国计量大学",'1','666.66','0','1','1','5');
+CREATE table invoice(
+    invoice_id int(20) PRIMARY key,
+    Taxpayer_number varchar(20) NOT NULL, #纳税人编号
+    tax_code varchar(20) NOT NULL, #税收编码
+    tax_rate double NOT NULL, #税率
+    review_person varchar(20) , #默认复核人
+    drawer varchar(20) NOT NULL, #默认开票人
+    payee varchar(20), #默认收款人
+    card_number varchar(20) NOT NULL, #银行卡号
+    opening_bank varchar(30) NOT NULL, #开户行
+    member_id int(20), #用户id
+    company_id int(20) #公司id
+);
+insert into invoice value(1,"120382938012391",'121312312','0.02',"njq","njq","njq","33102321283231","工商银行","1",null);

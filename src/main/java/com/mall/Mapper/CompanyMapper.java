@@ -1,4 +1,4 @@
-package com.mall.Mapper;/*
+package com.mall.mapper;/*
     @author Administrator
     @create 2021-07-16 15:00
 */
@@ -16,4 +16,5 @@ public interface CompanyMapper {
     Integer addCompany(Company company);
     Integer deleteCompany(int company_id);
     Integer updateCompany(Company company);
+    List<Company> findId(Integer company_id);
 }

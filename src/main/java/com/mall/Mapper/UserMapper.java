@@ -1,4 +1,4 @@
-package com.mall.Mapper;/*
+package com.mall.mapper;/*
     @author Administrator
     @create 2021-07-14 18:25
 */
@@ -6,10 +6,7 @@ package com.mall.Mapper;/*
 import com.mall.entity.Users;
 import org.apache.ibatis.annotations.Mapper;
 
-import javax.annotation.Resource;
-
 @Mapper
 public interface UserMapper {
     Users find(Users users);
-
 }

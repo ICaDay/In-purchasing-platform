@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.mapper.GoodsMapper">
+
+
+    <resultMap id="goodsMap" type="Goods" autoMapping="true">
+        <id column="goodsId" property="goodsId"/>
+        <association property="category" javaType="Category" autoMapping="true">
+            <id column="categoryId" property="categoryId"/>
+        </association>
+
+        <association property="stores" javaType="Stores" autoMapping="true">
+            <id column="storesId" property="storesId"/>
+        </association>
+    </resultMap>
+
+
+    <select id="findAll" resultMap="goodsMap">
+        select
+            *
+        from goods
+                 join category
+                      on category.categoryId = goods.categoryId
+                    JOIN stores
+        on stores.storesId=goods.storesId
+    </select>
+
+    <select id="find" parameterType="int" resultMap="goodsMap">
+        select
+            g.goodsId,g.goodsName,g.goodsType,g.goodsStatus,g.goodsPrice,g.goodsHuaxianjia,g.goodsStock,g.goodsSpecifications,g.goodsAddress,g.goodsProduceDate,g.goodsPicture,g.goodsYunfei,g.goodsXiangqing,g.goodsFlag,g.storesId,g.selectStatus,g.xiaoliang,c.categoryId,c.categoryName
+        from goods g
+                 join category c
+                      on g.categoryId = c.categoryId
+        where g.goodsId=#{goodsId}
+    </select>
+
+    <insert id = "doAdd" parameterType="Goods">
+        insert into goods
+        (goodsId,goodsName,goodsType,goodsStatus,goodsPrice,goodsHuaxianjia,goodsStock,goodsSpecifications,goodsAddress,goodsProduceDate,goodsPicture,goodsYunfei,goodsXiangqing,goodsFlag,storesId,selectStatus,xiaoliang,categoryId)
+        VALUES
+        (null,#{goodsName},#{goodsType},#{goodsStatus},#{goodsPrice},#{goodsHuaxianjia},#{goodsStock},#{goodsSpecifications},#{goodsAddress},#{goodsProduceDate},#{goodsPicture},#{goodsYunfei},#{goodsXiangqing},#{goodsFlag},#{storesId},#{selectStatus},#{xiaoliang},#{categoryId})
+    </insert>
+
+    <update id="doUpdate" parameterType="Goods">
+        update goods
+        <set>
+            <if test="goodsName!=null">
+                goodsName=#{goodsName},
+            </if>
+            <if test="goodsType!=null">
+                goodsType=#{goodsType},
+            </if>
+            <if test="goodsStatus!=null">
+                goodsStatus=#{goodsStatus},
+            </if>
+            <if test="goodsPrice!=0">
+                goodsPrice=#{goodsPrice},
+            </if>
+            <if test="goodsHuaxianjia!=0">
+                goodsHuaxianjia=#{goodsHuaxianjia},
+            </if>
+            <if test="goodsStock gte 0 and goodsStock!=null">
+                goodsStock=#{goodsStock},
+            </if>
+            <if test="goodsSpecifications!=null">
+                goodsSpecifications=#{goodsSpecifications},
+            </if>
+            <if test="goodsAddress!=null">
+                goodsAddress=#{goodsAddress},
+            </if>
+            <if test="goodsProduceDate!=null">
+                goodsProduceDate=#{goodsProduceDate},
+            </if>
+            <if test="goodsPicture!=null">
+                goodsPicture=#{goodsPicture},
+            </if>
+            <if test="goodsYunfei!=0 and goodsYunfei!=null">
+                goodsYunfei=#{goodsYunfei},
+            </if>
+            <if test="goodsXiangqing!=null">
+                goodsXiangqing=#{goodsXiangqing},
+            </if>
+            <if test="storesId!=0 and storesId!=null">
+                storesId = #{storesId},
+            </if>
+            <if test="selectStatus!=0 and selectStatus!=null">
+                selectStatus = #{selectStatus},
+            </if>
+            <if test="xiaoliang!=0 and xiaoliang!=null">
+                xiaoliang = #{xiaoliang},
+            </if>
+            <if test="categoryId!=null">
+                categoryId=#{categoryId},
+            </if>
+        </set>
+        where goodsId=#{goodsId}
+    </update>
+    <select id="findstoresgoods" parameterType="int" resultMap="goodsMap">
+        select
+            *
+        from goods
+        where storesId = #{storesId}
+    </select>
+
+
+    <select id="findType" parameterType="string" resultMap="goodsMap">
+        select
+            *
+        from goods
+        where goodsType = #{goodsType}
+    </select>
+    <select id="findStatus" parameterType="string" resultMap="goodsMap">
+        select
+            *
+        from goods
+        where goodsStatus = #{goodsStatus}
+    </select>
+
+    <select id="findcategorygoods" resultMap="goodsMap">
+        select *
+        from goods g
+                 join category c
+                      on g.categoryId = c.categoryId
+        where c.categoryId = #{categoryId}
+    </select>
+    <select id="search" resultMap="goodsMap">
+        select *
+        from goods
+        join category
+            on goods.categoryId = category.categoryId
+        where
+                goods.goodsName like "%"#{keyword}"%"
+    </select>
+    <select id="findgoodsId" resultMap="goodsMap">
+        select *
+            from goods
+                     join category
+                          on goods.categoryId = category.categoryId
+            join stores
+                on stores.storesId=goods.storesId
+            where goods.goodsId=#{goodsId}
+    </select>
+    <select id="get_Id" resultType="Integer">
+        SELECT max(goodsId) from goods
+    </select>
+</mapper>
